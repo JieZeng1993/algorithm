@@ -8,6 +8,8 @@ package com.zengjie.algorithm.search;
  * @since 2021/6/4 21:13
  */
 public interface ISearch {
+    int NOT_FOUND_INDEX = -1;
+
     /**
      * @param array 查询所在数组
      * @param value 查找值
