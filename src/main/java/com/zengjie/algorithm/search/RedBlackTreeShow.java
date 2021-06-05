@@ -40,7 +40,7 @@ public class RedBlackTreeShow {
 
         // 先将当前节点保存到二维数组中
 
-        res[rowIndex][columnIndex] = currRedBlackTreeNode.key + "-" + (currRedBlackTreeNode.red ? "R" : "B") + "";
+        res[rowIndex][columnIndex] = currRedBlackTreeNode.key + "-" + (currRedBlackTreeNode.color ? "R" : "B") + "";
 
         // 计算当前位于树的第几层
 
