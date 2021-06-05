@@ -165,7 +165,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
                     //继续往上平衡
                     redBlackTreeNode = parentOf(redBlackTreeNode);
                 } else {
-                    //3节点或4节点 , 兄弟为右子树，但是兄弟的右子树为空，虽然从血脉上来所是真正的兄弟，但是不是我想要的兄弟，我想要的兄弟需要有右子树，需要通右旋兄弟节点实现
+                    //3节点或4节点 , 兄弟为右子树，但是兄弟的右子树为空，虽然从血脉上来所是真正的兄弟，但是不是我想要的兄弟，我想要的兄弟需要有右子树，需要通右旋兄弟节点实现（有点像RL的情况）
                     if (colorOf(rightOf(brother)) == BLACK) {
                         //兄弟的右节点为空，通过对兄弟进行右旋，将兄弟的左节点上升为redBlackTreeNode的兄弟节点，而当前节点转换为最新兄弟节点的右节点
                         setColor(leftOf(brother), BLACK);
@@ -175,7 +175,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
                         brother = rightOf(parentOf(redBlackTreeNode));
                     }
 
-                    //上面的方法已经将没有右节点的情况转换为右节点的情况，现在就可以只考虑有右子树的情况了有点像（RR的情况）
+                    //上面的方法已经将没有右节点的情况转换为右节点的情况，现在就可以只考虑有右子树的情况了（有点像RR的情况）
                     setColor(brother, colorOf(parentOf(redBlackTreeNode)));
                     //下面俩个节点parentOf(redBlackTreeNode)，rightOf(brother)在兄弟左旋后变为他的俩个节点，故染色为黑色
                     setColor(parentOf(redBlackTreeNode), BLACK);
