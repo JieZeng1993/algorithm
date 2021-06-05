@@ -8,10 +8,10 @@ package com.zengjie.algorithm.search;
 public class RedBlackTree<K extends Comparable<K>, V> {
 
     public static void main(String[] args) {
-        RedBlackTree<String, Object> rbt = new RedBlackTree<>();
+        RedBlackTree<Integer, Object> rbt = new RedBlackTree<>();
         int i = 0;
         while (i++ < 8) {
-            rbt.insert(i + "", null);
+            rbt.insert(i, null);
             show(rbt.root);
         }
     }
@@ -247,19 +247,19 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     //---------------------------------打印相关代码---------------------------------------------------
-    public static int getTreeDepth(RedBlackTree.Node<String, Object> root) {
+    public static <K, V> int getTreeDepth(RedBlackTree.Node<K, V> root) {
         return root == null ? 0 : (1 + Math.max(getTreeDepth(root.left), getTreeDepth(root.right)));
 
     }
 
-    private static void writeArray(RedBlackTree.Node<String, Object> currNode, int rowIndex, int columnIndex, String[][] res, int treeDepth) {
+    private static <K, V> void writeArray(RedBlackTree.Node<K, V> currNode, int rowIndex, int columnIndex, String[][] res, int treeDepth) {
         // 保证输入的树不为空
 
         if (currNode == null) return;
 
         // 先将当前节点保存到二维数组中
 
-        res[rowIndex][columnIndex] = String.valueOf(currNode.key + "-" + (currNode.red ? "R" : "B") + "");
+        res[rowIndex][columnIndex] = currNode.key + "-" + (currNode.red ? "R" : "B") + "";
 
         // 计算当前位于树的第几层
 
@@ -293,7 +293,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
     }
 
-    public static void show(RedBlackTree.Node<String, Object> root) {
+    public static <K, V> void show(RedBlackTree.Node<K, V> root) {
         if (root == null) System.out.println("EMPTY!");
 
         // 得到树的深度
