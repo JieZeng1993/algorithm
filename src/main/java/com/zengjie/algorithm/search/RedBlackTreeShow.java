@@ -1,6 +1,8 @@
 package com.zengjie.algorithm.search;
 
 /**
+ * 打印参考https://blog.csdn.net/weixin_39875629/article/details/114137064
+ * 增加了泛型支持
  * @author jie.zeng
  * @version 1.0
  * @since 2021/6/5 12:05
