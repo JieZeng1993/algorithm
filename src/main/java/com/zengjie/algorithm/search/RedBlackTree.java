@@ -7,56 +7,56 @@ package com.zengjie.algorithm.search;
  */
 public class RedBlackTree<K extends Comparable<K>, V> {
 
-    public Node<K, V> getRoot() {
+    public RedBlackTreeNode<K, V> getRoot() {
         return root;
     }
 
-    private Node<K, V> root;
+    private RedBlackTreeNode<K, V> root;
 
     public void insert(K key, V value) {
         //查找到的位置的父节点
-        Node<K, V> parent = null;
-        Node<K, V> findNode = root;
-        while (findNode != null) {
-            parent = findNode;
-            int compare = key.compareTo(findNode.key);
+        RedBlackTreeNode<K, V> parent = null;
+        RedBlackTreeNode<K, V> findRedBlackTreeNode = root;
+        while (findRedBlackTreeNode != null) {
+            parent = findRedBlackTreeNode;
+            int compare = key.compareTo(findRedBlackTreeNode.key);
             if (compare == 0) {
                 //相等，替换值
-                System.out.printf("根据key【%s】,找到相同的，value由【%s】更改为【%s】\n", key, findNode.value, value);
-                findNode.value = value;
+                System.out.printf("根据key【%s】,找到相同的，value由【%s】更改为【%s】\n", key, findRedBlackTreeNode.value, value);
+                findRedBlackTreeNode.value = value;
                 return;
             } else if (compare > 0) {
                 //插入的key大于当前节点
-                findNode = findNode.right;
+                findRedBlackTreeNode = findRedBlackTreeNode.right;
             } else {
-                findNode = findNode.left;
+                findRedBlackTreeNode = findRedBlackTreeNode.left;
             }
         }
 
         if (parent == null) {
             //根节点为黑色
-            root = new Node<>(key, value, false);
+            root = new RedBlackTreeNode<>(key, value, false);
             System.out.printf("首次插入，根节点key【%s】,value为【%s】\n", key, value);
             return;
         }
 
         //非根节点插入时，都插入红色，因为插入红色有可能不会破坏黑色平衡
-        Node<K, V> node = new Node<>(key, value, true);
+        RedBlackTreeNode<K, V> redBlackTreeNode = new RedBlackTreeNode<>(key, value, true);
         System.out.printf("插入，节点key【%s】,value为【%s】\n", key, value);
-        node.parent = parent;
+        redBlackTreeNode.parent = parent;
         //判断插在父节点的位置
         System.out.printf("插入的位置的父节点【%s】\n", parent.key);
 
         int compare = key.compareTo(parent.key);
         if (compare > 0) {
             //插入节点比父节点大，插在父节点的右节点
-            parent.right = node;
+            parent.right = redBlackTreeNode;
             System.out.print("插在父节点的右节点\n");
         } else {
-            parent.left = node;
+            parent.left = redBlackTreeNode;
             System.out.print("插在父节点的左节点\n");
         }
-        balanceInsertion(node);
+        balanceInsertion(redBlackTreeNode);
     }
 
     /**
@@ -72,17 +72,17 @@ public class RedBlackTree<K extends Comparable<K>, V> {
      * ----------情况4.3.2：插入节点为父节点的右节点(RR)，父节点变黑色，爷爷变为红色，以爷爷节点左旋就行了
      * ----------情况4.3.1：插入节点为父节点的左节点(RL)，以父节点右旋旋转,再平衡父节点
      *
-     * @param node 平衡节点
+     * @param redBlackTreeNode 平衡节点
      */
-    public void balanceInsertion(Node<K, V> node) {
-        if (node == null) {
+    public void balanceInsertion(RedBlackTreeNode<K, V> redBlackTreeNode) {
+        if (redBlackTreeNode == null) {
             return;
         }
         root.red = false;
 
-        Node<K, V> parent = node.parent;
+        RedBlackTreeNode<K, V> parent = redBlackTreeNode.parent;
         if (parent == null) {
-            System.out.printf("平衡节点【%s】的父节点为null，跳过平衡", node.key);
+            System.out.printf("平衡节点【%s】的父节点为null，跳过平衡", redBlackTreeNode.key);
             return;
         }
 
@@ -91,17 +91,17 @@ public class RedBlackTree<K extends Comparable<K>, V> {
             return;
         }
 
-        Node<K, V> gparent = parent.parent;
+        RedBlackTreeNode<K, V> gparent = parent.parent;
         if (gparent == null) {
             throw new RuntimeException(String.format("红节点肯定不为根节点，所以肯定有爷爷节点，请检查算法正确性，父节点【%s】", parent.key));
         }
 
-        Node<K, V> uncle;
+        RedBlackTreeNode<K, V> uncle;
 
         if (gparent.right == parent) {
             uncle = gparent.left;
             if (uncle == null || !uncle.red) {
-                if (parent.right == node) {
+                if (parent.right == redBlackTreeNode) {
                     //RR
                     parent.red = false;
                     gparent.red = true;
@@ -121,7 +121,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         } else {
             uncle = gparent.right;
             if (uncle == null || !uncle.red) {
-                if (parent.right == node) {
+                if (parent.right == redBlackTreeNode) {
                     //LR
                     leftRotate(parent);
                     balanceInsertion(parent);
@@ -148,40 +148,40 @@ public class RedBlackTree<K extends Comparable<K>, V> {
      * 左孩子作为当前节点的父节点
      * 当前节点成为左孩子的右节点
      *
-     * @param node 被右旋的节点
+     * @param redBlackTreeNode 被右旋的节点
      */
-    public void rightRotate(Node<K, V> node) {
-        if (node == null) {
+    public void rightRotate(RedBlackTreeNode<K, V> redBlackTreeNode) {
+        if (redBlackTreeNode == null) {
             System.out.println("旋转节点为null，跳过右旋");
             return;
         }
-        Node<K, V> left = node.left;
+        RedBlackTreeNode<K, V> left = redBlackTreeNode.left;
 
         if (left == null) {
             System.out.println("左孩子为null，跳过右旋");
             return;
         }
 
-        Node<K, V> leftRight = left.right;
-        node.left = leftRight;
+        RedBlackTreeNode<K, V> leftRight = left.right;
+        redBlackTreeNode.left = leftRight;
         if (leftRight != null) {
-            leftRight.parent = node;
+            leftRight.parent = redBlackTreeNode;
         }
 
-        Node<K, V> parent = node.parent;
+        RedBlackTreeNode<K, V> parent = redBlackTreeNode.parent;
         left.parent = parent;
         if (parent == null) {
             root = left;
         } else {
-            if (parent.right == node) {
+            if (parent.right == redBlackTreeNode) {
                 parent.right = left;
             } else {
                 parent.left = left;
             }
         }
 
-        node.parent = left;
-        left.right = node;
+        redBlackTreeNode.parent = left;
+        left.right = redBlackTreeNode;
     }
 
     /**
@@ -191,52 +191,45 @@ public class RedBlackTree<K extends Comparable<K>, V> {
      * 右孩子成为当前节点的父节点，
      * 当前节点成为右孩子的左节点
      *
-     * @param node 被旋转的点
+     * @param redBlackTreeNode 被旋转的点
      */
-    public void leftRotate(Node<K, V> node) {
-        if (node == null) {
+    public void leftRotate(RedBlackTreeNode<K, V> redBlackTreeNode) {
+        if (redBlackTreeNode == null) {
             System.out.println("旋转节点为null，跳过左旋");
             return;
         }
-        Node<K, V> right = node.right;
+        RedBlackTreeNode<K, V> right = redBlackTreeNode.right;
         if (right == null) {
             System.out.println("右孩子为null，跳过左旋");
             return;
         }
 
-        Node<K, V> rightLeft = right.left;
-        node.right = rightLeft;
+        RedBlackTreeNode<K, V> rightLeft = right.left;
+        redBlackTreeNode.right = rightLeft;
         if (rightLeft != null) {
-            rightLeft.parent = node;
+            rightLeft.parent = redBlackTreeNode;
         }
 
-        Node<K, V> parent = node.parent;
+        RedBlackTreeNode<K, V> parent = redBlackTreeNode.parent;
         right.parent = parent;
         if (parent == null) {
             root = right;
         } else {
-            if (parent.right == node) {
+            if (parent.right == redBlackTreeNode) {
                 parent.right = right;
             } else {
                 parent.left = right;
             }
         }
 
-        node.parent = right;
-        right.left = node;
+        redBlackTreeNode.parent = right;
+        right.left = redBlackTreeNode;
     }
 
-    static class Node<K, V> {
-        Node<K, V> parent;
-        Node<K, V> left;
-        Node<K, V> right;
-        K key;
-        V value;
+    static class RedBlackTreeNode<K extends Comparable<K>, V> extends TreeNode<K ,V>{
         boolean red;
-
-        public Node(K key, V value, boolean red) {
-            this.key = key;
-            this.value = value;
+        public RedBlackTreeNode(K key, V value, boolean red) {
+            super(key,value);
             this.red = red;
         }
     }

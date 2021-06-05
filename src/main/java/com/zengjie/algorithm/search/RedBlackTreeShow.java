@@ -3,6 +3,7 @@ package com.zengjie.algorithm.search;
 /**
  * 打印参考https://blog.csdn.net/weixin_39875629/article/details/114137064
  * 增加了泛型支持
+ *
  * @author jie.zeng
  * @version 1.0
  * @since 2021/6/5 12:05
@@ -13,29 +14,33 @@ public class RedBlackTreeShow {
         int i = 0;
         while (i++ < 8) {
             rbt.insert(i, null);
-            show(rbt);
+            show(rbt.getRoot());
         }
 
         rbt = new RedBlackTree<>();
         while (i-- > 0) {
             rbt.insert(i, null);
-            show(rbt);
+            show(rbt.getRoot());
         }
+
+        TraversalUtil.preorderTraversal(rbt.getRoot());
+        TraversalUtil.middleTraversal(rbt.getRoot());
+        TraversalUtil.postorderTraversal(rbt.getRoot());
     }
 
-    public static <K, V> int getTreeDepth(RedBlackTree.Node<K, V> root) {
+    public static <K extends Comparable<K>, V> int getTreeDepth(RedBlackTree.RedBlackTreeNode<K, V> root) {
         return root == null ? 0 : (1 + Math.max(getTreeDepth(root.left), getTreeDepth(root.right)));
 
     }
 
-    private static <K, V> void writeArray(RedBlackTree.Node<K, V> currNode, int rowIndex, int columnIndex, String[][] res, int treeDepth) {
+    private static <K extends Comparable<K>, V> void writeArray(RedBlackTree.RedBlackTreeNode<K, V> currRedBlackTreeNode, int rowIndex, int columnIndex, String[][] res, int treeDepth) {
         // 保证输入的树不为空
 
-        if (currNode == null) return;
+        if (currRedBlackTreeNode == null) return;
 
         // 先将当前节点保存到二维数组中
 
-        res[rowIndex][columnIndex] = currNode.key + "-" + (currNode.red ? "R" : "B") + "";
+        res[rowIndex][columnIndex] = currRedBlackTreeNode.key + "-" + (currRedBlackTreeNode.red ? "R" : "B") + "";
 
         // 计算当前位于树的第几层
 
@@ -51,26 +56,25 @@ public class RedBlackTreeShow {
 
         // 对左儿子进行判断，若有左儿子，则记录相应的"/"与左儿子的值
 
-        if (currNode.left != null) {
+        if (currRedBlackTreeNode.left != null) {
             res[rowIndex + 1][columnIndex - gap] = "/";
 
-            writeArray(currNode.left, rowIndex + 2, columnIndex - gap * 2, res, treeDepth);
+            writeArray(currRedBlackTreeNode.left, rowIndex + 2, columnIndex - gap * 2, res, treeDepth);
 
         }
 
         // 对右儿子进行判断，若有右儿子，则记录相应的"\"与右儿子的值
 
-        if (currNode.right != null) {
+        if (currRedBlackTreeNode.right != null) {
             res[rowIndex + 1][columnIndex + gap] = "\\";
 
-            writeArray(currNode.right, rowIndex + 2, columnIndex + gap * 2, res, treeDepth);
+            writeArray(currRedBlackTreeNode.right, rowIndex + 2, columnIndex + gap * 2, res, treeDepth);
 
         }
 
     }
 
-    public static <K extends Comparable<K>, V> void show(RedBlackTree<K, V> redBlackTree) {
-        RedBlackTree.Node<K, V> root = redBlackTree.getRoot();
+    public static <K extends Comparable<K>, V> void show(RedBlackTree.RedBlackTreeNode<K, V> root) {
         if (root == null) System.out.println("EMPTY!");
 
         // 得到树的深度
