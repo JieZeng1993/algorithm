@@ -213,7 +213,10 @@ public class RedBlackTree<K extends Comparable<K>, V> {
             }
         }
 
-        //替代节点是染黑，则直接染黑，补偿删除的黑色的节点，这样红黑树依然保持平衡
+        //替代删除时，替代节点肯定时红色，被替代节点时黑色（因为红黑树的原理，只存在一个子节点的情况下，父节点肯定是黑色，子节点肯定为红色，不然不平衡）
+        //直接删除时，被删除节点肯定为黑色（红色，不调用这个方法）
+        //==root的情况，跳出来，只是将根节点设置为黑色
+        //不等于root，那么就是redBlackTreeNode是红色，需要再次染黑
         setColor(redBlackTreeNode, BLACK);
     }
 
